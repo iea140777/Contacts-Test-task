@@ -1,6 +1,25 @@
-# Getting Started with Create React App
+# General description
 
+This is a test task application created with React + Typescript, Redux Toolkit + Redux Toolkit Query.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+
+[JSON server](https://github.com/typicode/json-server) is used with mocked data in `db.json` file.
+
+Application consists of two pages - Home and Contacts.
+
+On Home page user can login (enetering email and password), and if login is successfull, link to Contacts page is available.
+Implementation of authorization is primitive, without using tokens, only checking user login/password and setting isAuthorized flag.
+To authorize successfully enter login and password for one of the users from db.json file (e.g. email: `user1@user.ru`, password: `1`)
+
+On Contacts page user can see his/her contacts list, can create, edit or delete contacts, search contacts.
+
+# To start this app:
+
+- clone this repo
+- In the project directory run:
+  - run `npm i` to install project dependencies
+  - run `json-server --watch db.json --port 3004` to start JSON server
+  - run `npm start` to start application in development mode
 
 ## Available Scripts
 
@@ -14,10 +33,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `json-server --watch db.json --port 3004`
+Starts JSON Server 
+
+To authorize use credentials for any user from db.json (e.g. email: user2@user.com, password: user2)
+
 
 ### `npm run build`
 
@@ -38,9 +59,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
