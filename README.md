@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 [JSON server](https://github.com/typicode/json-server) is used with mocked data in `db.json` file.
 
+Node.js version: `14.17.0`
+
 Application consists of two pages - Home and Contacts.
 
 On Home page user can login (enetering email and password), and if login is successfull, link to Contacts page is available.
