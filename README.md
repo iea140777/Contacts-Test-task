@@ -25,7 +25,7 @@ On Contacts page user can see his/her contacts list, can create, edit or delete 
 
 In the project directory, you can run:
 
-### `npm start`
+ `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -33,14 +33,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-
-### `json-server --watch db.json --port 3004`
-Starts JSON Server 
-
-To authorize use credentials for any user from db.json (e.g. email: user2@user.com, password: user2)
-
-
-### `npm run build`
+ `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -50,7 +43,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+ `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
