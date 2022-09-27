@@ -42,8 +42,18 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   }
 
   const saveChangesHandler = async () => {
-    isNewContact ?  await addUserContactMutation(contactData) : 
-    await updateUserContactMutation(contactData);
+    if (isNewContact) {
+      /* Checking whether new contact has no filled fields except "id" 
+      to prevent saving new empty contacts */
+      const isEmptyContact = Object.values(contactData).filter(item => item !== '').length === 1;
+      if (isEmptyContact) {
+        cancelNewContact();
+      } else {
+        await addUserContactMutation(contactData)
+      }
+    } else {
+      await updateUserContactMutation(contactData);
+    } 
     setEditMode(false);
   }
 
@@ -87,7 +97,7 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
  
   return (
     <Card 
-      title={editMode ? <div className={styles.inputContainer}>Name: {renderEditInput("name")}</div> : name} 
+      title={editMode ? <div className={styles.inputContainer}>Name: {renderEditInput("name")}</div> : name ||' No name'} 
       actions={editMode ? cardActionsEditMode : cardActionsDefault }
       loading={isLoading || addingUser || updatingUser}
       className={styles.card}

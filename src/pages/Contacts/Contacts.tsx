@@ -36,6 +36,8 @@ function Contacts() {
 
   const [contacts, setContacts] = useState<ContactsList>(userContacts);
 
+  const hasEmptyContact = contacts.filter(contact => contact.id === 0).length > 0
+
   useEffect(() => setContacts(userContacts), [userContacts]);
   
   const renderContactCards = () => {
@@ -49,7 +51,7 @@ function Contacts() {
   }
 
   const addContactHandler = () => {
-    setContacts([...contacts, emptyContact])
+    setContacts([emptyContact, ...contacts])
   }
 
   const cancelNewContactHandler = () => {
@@ -76,6 +78,7 @@ function Contacts() {
         size='large'
         onClick={addContactHandler}
         className={styles.button}
+        disabled={hasEmptyContact}
       >
         Add new contact
       </Button>
