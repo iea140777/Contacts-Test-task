@@ -5,7 +5,7 @@ import {  selectUser } from '../Home/userSlice';
 import { useGetUserContactsQuery } from '../../api/UserApi';
 import { ContactCard } from '../../components/ContactCard/ContactCard';
 import { useAppSelector } from '../../app/hooks';
-import { ContactsList, Contact } from '../../types/types';
+import { ContactsList, Contact } from '../../utils/types';
 
 import styles from './Contacts.module.scss';
 

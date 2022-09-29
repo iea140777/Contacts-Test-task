@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {UserData, UsersData, ContactsList, Contact } from '../types/types'
+import {UserData, UsersData, ContactsList, Contact } from '../utils/types'
 
 type GetUserRequestParams = Pick<UserData, "email" |"password">; 
 

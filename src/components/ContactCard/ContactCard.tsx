@@ -6,7 +6,9 @@ import {
   useUpdateUserContactMutation,
   useDeleteUserContactMutation,
   useAddUserContactMutation }   from '../../api/UserApi';
-import { Contact } from '../../types/types';
+import { Contact } from '../../utils/types';
+import { ModalVariants } from '../../utils/constants';
+import { ContactsModal } from '../ContactsModal/ContactsModal';
 
 import styles from './ContactCard.module.scss';
 
@@ -19,15 +21,18 @@ interface ContactCardProps {
 function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   const { id, name, phone, email, address} = contact;
 
-  const isNewContact:boolean = id === 0;
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [modalVariant, setModalVariant] = useState<ModalVariants|undefined>(undefined)
   
+  const isNewContact:boolean = id === 0;
+
   const[editMode, setEditMode] = useState<boolean>(isNewContact ? true : false);
   
   const[contactData, setContactData] = useState<Contact>(contact);
 
   const [addUserContactMutation, {isLoading: addingUser} ] = useAddUserContactMutation();
   
-
   const [updateUserContactMutation, {isLoading: updatingUser }] = useUpdateUserContactMutation();
   
   const [deleteUserContactMutation] = useDeleteUserContactMutation();
@@ -38,7 +43,8 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   }
 
   const deleteContactHandler = () => {
-    deleteUserContactMutation(id)
+    setModalVariant(ModalVariants.DELETE_CONTACT);
+    setIsModalOpen(true);
   }
 
   const saveChangesHandler = async () => {
@@ -47,14 +53,16 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
       to prevent saving new empty contacts */
       const isEmptyContact = Object.values(contactData).filter(item => item !== '').length === 1;
       if (isEmptyContact) {
-        cancelNewContact();
+        setModalVariant(ModalVariants.SAVE_EMPTY_CONTACT);
+        setIsModalOpen(true);
       } else {
-        await addUserContactMutation(contactData)
+        await addUserContactMutation(contactData);
+        setEditMode(false);
       }
     } else {
       await updateUserContactMutation(contactData);
+      setEditMode(false);
     } 
-    setEditMode(false);
   }
 
   const cancelChangesHandler = () => {
@@ -64,6 +72,31 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
       setContactData(contact);
       setEditMode(false);
     }
+  }
+
+  const handleModalOk = async() => {
+    switch (modalVariant) {
+      case ModalVariants.DELETE_CONTACT: {
+        await deleteUserContactMutation(id);
+        setIsModalOpen(false);
+        setModalVariant(undefined);
+        break;
+      }
+      case ModalVariants.SAVE_EMPTY_CONTACT: {
+        cancelNewContact();
+        setIsModalOpen(false);
+        setModalVariant(undefined);
+        break;
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+    setModalVariant(undefined);
   }
 
   const cardActionsDefault = [
@@ -96,16 +129,20 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   }
  
   return (
-    <Card 
-      title={editMode ? <div className={styles.inputContainer}>Name: {renderEditInput("name")}</div> : name ||' No name'} 
-      actions={editMode ? cardActionsEditMode : cardActionsDefault }
-      loading={isLoading || addingUser || updatingUser}
-      className={styles.card}
-    >
-      <div className={styles.inputContainer}>Phone: {editMode ? renderEditInput("phone") : phone }</div>
-      <div className={styles.inputContainer}>Email: {editMode ? renderEditInput("email") : email }</div>
-      <div className={styles.inputContainer}>Address: {editMode ? renderEditInput("address") : address }</div>
-    </Card>
+    <form id={id.toString()}>
+      <Card 
+        title={editMode ? <div className={styles.inputContainer}>Name: {renderEditInput("name")}</div> : name ||' No name'} 
+        actions={editMode ? cardActionsEditMode : cardActionsDefault }
+        loading={isLoading || addingUser || updatingUser}
+        className={styles.card}
+      >
+        <div className={styles.inputContainer}>Phone: {editMode ? renderEditInput("phone") : phone }</div>
+        <div className={styles.inputContainer}>Email: {editMode ? renderEditInput("email") : email }</div>
+        <div className={styles.inputContainer}>Address: {editMode ? renderEditInput("address") : address }</div>
+        <ContactsModal variant={modalVariant} isModalOpen={isModalOpen} contactName={name} handleModalOk={handleModalOk} handleModalCancel={handleModalCancel}/>
+
+      </Card>
+    </form>
   )
 }
 
