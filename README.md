@@ -20,7 +20,7 @@ On Contacts page user can see his/her contacts list, can create, edit or delete 
 - clone this repo
 - In the project directory run:
   - run `npm i` to install project dependencies
-  - run `json-server --watch db.json --port 3004` to start JSON server
+  - run `npm run start-server` to start JSON server
   - run `npm start` to start application in development mode
 
 ## Available Scripts
