@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Input } from 'antd';
 import { faEdit, faTrashAlt, faSave, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAppDispatch } from '../../app/hooks';
 import { 
   useUpdateUserContactMutation,
   useDeleteUserContactMutation,
   useAddUserContactMutation }   from '../../api/UserApi';
+import { setIsLoading } from '../../app/loaderSlice';
 import { Contact } from '../../utils/types';
 import { ModalVariants } from '../../utils/constants';
 import { ContactsModal } from '../ContactsModal/ContactsModal';
@@ -21,21 +23,35 @@ interface ContactCardProps {
 function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   const { id, name, phone, email, address} = contact;
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
-  const [modalVariant, setModalVariant] = useState<ModalVariants|undefined>(undefined)
-  
   const isNewContact:boolean = id === 0;
 
   const[editMode, setEditMode] = useState<boolean>(isNewContact ? true : false);
   
   const[contactData, setContactData] = useState<Contact>(contact);
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [modalVariant, setModalVariant] = useState<ModalVariants|undefined>(undefined)
+  
+
   const [addUserContactMutation, {isLoading: addingUser} ] = useAddUserContactMutation();
   
   const [updateUserContactMutation, {isLoading: updatingUser }] = useUpdateUserContactMutation();
   
-  const [deleteUserContactMutation] = useDeleteUserContactMutation();
+  const [deleteUserContactMutation, {isLoading: deletingUser }] = useDeleteUserContactMutation();
+
+  const isProcessingChanges = addingUser || updatingUser || deletingUser;
+
+  useEffect(() => {
+    if (isProcessingChanges || isLoading)  {
+      dispatch(setIsLoading(true));
+    } else {
+      dispatch(setIsLoading(false));
+    }
+  },
+  [ isProcessingChanges, isLoading, dispatch ]);
 
   const editContactHandler = () => {
     setContactData(contact);

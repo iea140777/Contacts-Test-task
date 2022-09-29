@@ -1,10 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { userApi } from '../api/UserApi';
-import userReducer from '../pages/Home/userSlice'
+import userReducer from '../pages/Home/userSlice';
+import loaderReducer from './loaderSlice';
+
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    loader: loaderReducer,
     [userApi.reducerPath]: userApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

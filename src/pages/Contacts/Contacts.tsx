@@ -4,25 +4,21 @@ import { Button, Input } from 'antd';
 import {  selectUser } from '../Home/userSlice';
 import { useGetUserContactsQuery } from '../../api/UserApi';
 import { ContactCard } from '../../components/ContactCard/ContactCard';
-import { useAppSelector } from '../../app/hooks';
-import { ContactsList, Contact } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { setIsLoading } from '../../app/loaderSlice';
+import { ContactsList } from '../../utils/types';
+import { emptyContact } from '../../utils/constants';
 
 import styles from './Contacts.module.scss';
-
-const emptyContact:Contact = {
-  id: 0,
-  name: '',
-  phone: '',
-  address: '',
-  email: ''
-}
 
 const { Search } = Input;
 
 function Contacts() {
-  const { isAuthorized, userId } = useAppSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
+  const { isAuthorized, userId } = useAppSelector(selectUser);
+  
   useEffect (() => {
     if(!isAuthorized || !userId) {
       navigate('/');
@@ -32,7 +28,16 @@ function Contacts() {
 
   const [searchString, setSearchString] = useState<string>('');
 
-  const { data: userContacts = [], isLoading, isError } = useGetUserContactsQuery(searchString);
+  const { data: userContacts = [], isFetching, isError } = useGetUserContactsQuery(searchString);
+
+  useEffect(() => {
+    if (isFetching)  {
+      dispatch(setIsLoading(true));
+    } else {
+      dispatch(setIsLoading(false));
+    }
+  },
+  [ isFetching, dispatch ]);
 
   const [contacts, setContacts] = useState<ContactsList>(userContacts);
 
@@ -45,7 +50,7 @@ function Contacts() {
       <ContactCard 
         contact={contact} 
         key={contact.id} 
-        isLoading={isLoading}
+        isLoading={isFetching}
         cancelNewContact={cancelNewContactHandler}/>)
     )
   }
@@ -68,7 +73,7 @@ function Contacts() {
           allowClear
           placeholder='Enter contact name'
           enterButton
-          loading={isLoading}
+          loading={isFetching}
           onSearch={value => setSearchString(value)}
         />
       </div>
@@ -82,7 +87,7 @@ function Contacts() {
       >
         Add new contact
       </Button>
-     { isLoading && <span>Getting contacts...</span> }
+     { isFetching && <span>Getting contacts...</span> }
      { isError && <span>Something went wrong...</span> }
      { userContacts && (
         <div className={styles.cardContainer}>

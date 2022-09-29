@@ -19,7 +19,7 @@ const renderModalVariants = () => {
       )
     case ModalVariants.SAVE_EMPTY_CONTACT:
       return (
-        <span>If you save contact without data it will be deleted. Are you sure you want to proceed?</span>
+        <span>New contact with all empty fields can't be saved. It will be deleted. Are you sure you want to proceed?</span>
       )
     default: {
       return null;
