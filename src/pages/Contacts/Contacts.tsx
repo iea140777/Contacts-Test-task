@@ -37,7 +37,7 @@ function Contacts() {
       dispatch(setIsLoading(false));
     }
   },
-  [ isFetching, dispatch ]);
+  [ isFetching ]);
 
   const [contacts, setContacts] = useState<ContactsList>(userContacts);
 

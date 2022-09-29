@@ -40,7 +40,7 @@ function Home() {
       dispatch(setIsLoading(false));
     }
   },
-  [ isLoading, dispatch ]);
+  [ isLoading ]);
 
   useEffect(() => {
     if (!isUserFetching && loginResult && loginResult.length === 1) {

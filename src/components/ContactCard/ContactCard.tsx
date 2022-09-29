@@ -45,13 +45,11 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
   const isProcessingChanges = addingUser || updatingUser || deletingUser;
 
   useEffect(() => {
-    if (isProcessingChanges || isLoading)  {
+    if (isProcessingChanges)  {
       dispatch(setIsLoading(true));
-    } else {
-      dispatch(setIsLoading(false));
     }
   },
-  [ isProcessingChanges, isLoading, dispatch ]);
+  [ isProcessingChanges ]);
 
   const editContactHandler = () => {
     setContactData(contact);
