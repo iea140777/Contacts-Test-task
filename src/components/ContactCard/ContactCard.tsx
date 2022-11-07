@@ -49,7 +49,7 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
       dispatch(setIsLoading(true));
     }
   },
-  [ isProcessingChanges ]);
+  [ isProcessingChanges, dispatch ]);
 
   const editContactHandler = () => {
     setContactData(contact);
@@ -154,7 +154,6 @@ function ContactCard ({contact, cancelNewContact, isLoading}:ContactCardProps) {
         <div className={styles.inputContainer}>Email: {editMode ? renderEditInput("email") : email }</div>
         <div className={styles.inputContainer}>Address: {editMode ? renderEditInput("address") : address }</div>
         <ContactsModal variant={modalVariant} isModalOpen={isModalOpen} contactName={name} handleModalOk={handleModalOk} handleModalCancel={handleModalCancel}/>
-
       </Card>
     </form>
   )

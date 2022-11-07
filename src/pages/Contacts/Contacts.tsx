@@ -37,7 +37,7 @@ function Contacts() {
       dispatch(setIsLoading(false));
     }
   },
-  [ isFetching ]);
+  [ isFetching, dispatch ]);
 
   const [contacts, setContacts] = useState<ContactsList>(userContacts);
 
@@ -87,7 +87,6 @@ function Contacts() {
       >
         Add new contact
       </Button>
-     { isFetching && <span>Getting contacts...</span> }
      { isError && <span>Something went wrong...</span> }
      { userContacts && (
         <div className={styles.cardContainer}>

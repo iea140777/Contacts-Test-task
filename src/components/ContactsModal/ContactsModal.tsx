@@ -34,6 +34,7 @@ const renderModalVariants = () => {
       onOk={handleModalOk}
       onCancel={handleModalCancel}
       destroyOnClose
+      centered
     >
       {renderModalVariants()}
     </Modal>
